@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { API_BASE_URL, WS_BASE_URL } from '../config';
 
 // SESSION_ID is now handled dynamically within the component to prevent cross-student history leaks
 
@@ -15,7 +16,7 @@ const ChatWidget = ({ studentId }: { studentId: number }) => {
   const fetchInitialGreeting = async () => {
     const studentSession = `admin-session-${studentId}`;
     try {
-        const res = await fetch(`http://localhost:8000/api/v1/students/${studentId}`);
+        const res = await fetch(`${API_BASE_URL}/api/v1/students/${studentId}`);
         const sData = await res.json();
         const greeting = `Hello ${sData.name.split()[0]}, I'm ISAES. I've initialized a secure REST-fallback session for you. How can I help?`;
         setMessages([{ role: "assistant", content: greeting }]);
@@ -39,9 +40,8 @@ const ChatWidget = ({ studentId }: { studentId: number }) => {
     
     setConnectionStatus('connecting');
     const studentSession = `admin-session-${studentId}`;
-    const host = window.location.hostname || "127.0.0.1";
-    const port = "8000";
-    const ws = new WebSocket(`ws://${host}:${port}/api/v1/chat/ws/${studentId}/${studentSession}`);
+    const wsUrl = `${WS_BASE_URL}/api/v1/chat/ws/${studentId}/${studentSession}`;
+    const ws = new WebSocket(wsUrl);
     wsRef.current = ws;
     
     ws.onopen = () => {
@@ -94,7 +94,7 @@ const ChatWidget = ({ studentId }: { studentId: number }) => {
     } else {
         // REST FALLBACK MODE
         try {
-            const res = await fetch('http://localhost:8000/api/v1/chat/message', {
+            const res = await fetch(`${API_BASE_URL}/api/v1/chat/message`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

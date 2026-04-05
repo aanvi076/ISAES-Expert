@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import ReportViewer from './ReportViewer';
 import ChatWidget from './ChatWidget';
+import { API_BASE_URL } from '../config';
 
 interface Student {
   id: number;
@@ -28,7 +29,7 @@ const AdminDashboard = () => {
   const [selectedDept, setSelectedDept] = useState("All");
 
   useEffect(() => {
-    fetch('http://localhost:8000/api/v1/students')
+    fetch(`${API_BASE_URL}/api/v1/students`)
       .then(res => res.json())
       .then(data => {
         setStudents(data);

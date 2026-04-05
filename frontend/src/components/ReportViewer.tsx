@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { API_BASE_URL } from '../config';
 
 const ReportViewer = ({ studentId }: { studentId: number }) => {
   const [downloading, setDownloading] = useState(false);
@@ -11,7 +12,7 @@ const ReportViewer = ({ studentId }: { studentId: number }) => {
       setLoading(true);
       try {
         // 1. Fetch Student Basic Data
-        const sRes = await fetch(`http://localhost:8000/api/v1/students/${studentId}`);
+        const sRes = await fetch(`${API_BASE_URL}/api/v1/students/${studentId}`);
         const sData = await sRes.json();
         setStudent(sData);
 
@@ -26,7 +27,7 @@ const ReportViewer = ({ studentId }: { studentId: number }) => {
             program: sData.program
         };
 
-        const aRes = await fetch(`http://localhost:8000/api/v1/students/${studentId}/advise`, {
+        const aRes = await fetch(`${API_BASE_URL}/api/v1/students/${studentId}/advise`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(advicePayload)
@@ -45,7 +46,7 @@ const ReportViewer = ({ studentId }: { studentId: number }) => {
   const handleDownload = async () => {
     setDownloading(true);
     try {
-      const response = await fetch(`http://localhost:8000/api/v1/students/${studentId}/report/pdf`);
+      const response = await fetch(`${API_BASE_URL}/api/v1/students/${studentId}/report/pdf`);
       
       const contentType = response.headers.get('content-type');
       const blob = await response.blob();

@@ -4,7 +4,16 @@
 
 ![Dashboard Preview](file:///C:/Users/Aanvi%20Bindal/.gemini/antigravity/brain/69dda630-15cb-4083-be95-0e1ca87f1aa0/dashboard_overview_1775373581034.png)
 
-## ✨ Core Features
+## 🌐 Live Deployment & Demo
+- **Frontend (UI)**: [isaes-expert.vercel.app](https://isaes-expert.vercel.app)
+- **Backend (API)**: [isaes-backend.onrender.com](https://isaes-backend.onrender.com)
+- **Source Code**: [github.com/aanvi076/ISAES-Expert](https://github.com/aanvi076/ISAES-Expert)
+
+## 📥 Clone & Show (Immediate Access)
+To show this on a different laptop, just run:
+```bash
+git clone https://github.com/aanvi076/ISAES-Expert.git
+```
 
 - **🧠 Expert Intelligence Core**: Uses a 4-tier performance matrix (Excellence, Stable, Probation, Critical) to generate non-repetitive, course-specific advice.
 - **🤖 ISAES Copilot (AI Chatbot)**: A resilient chat assistant with a REST-fallback handshake, ensuring 100% connectivity. Includes pre-fed FAQ buttons for instant answers.
