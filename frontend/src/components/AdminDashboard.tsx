@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import ReportViewer from './ReportViewer';
 import ChatWidget from './ChatWidget';
 import { API_BASE_URL } from '../config';

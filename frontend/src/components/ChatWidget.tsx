@@ -14,7 +14,6 @@ const ChatWidget = ({ studentId }: { studentId: number }) => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const fetchInitialGreeting = async () => {
-    const studentSession = `admin-session-${studentId}`;
     try {
         const res = await fetch(`${API_BASE_URL}/api/v1/students/${studentId}`);
         const sData = await res.json();
