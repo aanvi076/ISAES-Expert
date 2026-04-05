@@ -1,35 +1,63 @@
-# Intelligent Student Academic Advisory Expert System (ISAES)
+# ISAES: Intelligent Student Academic Advisory Expert System 🎓🚀
 
-ISAES is a full-stack educational advisory platform that combines a Python experta-based rule engine with an AI Chatbot and formal PDF report generation capabilities.
+**ISAES** is a state-of-the-art academic intelligence platform designed to empower advisors and students with data-driven insights. It transforms raw academic data into personalized, course-specific improvement strategies using a robust rule-based inference engine.
 
-## Architecture Stack
-- **Frontend**: React 18, TypeScript, Vite, TailwindCSS (for shadcn/ui components).
-- **Backend API**: FastAPI (Python 3.11).
-- **Inference Engine**: Experta for CLIPS-based declarative rules.
-- **Reporting Generator**: WeasyPrint & Jinja2 for standard HTML->PDF output logic.
-- **Chatbot Core**: Anthropic Claude + Redis for WebSocket conversational sessions.
-- **Persistence Layer**: PostgreSQL 16 
+![Dashboard Preview](file:///C:/Users/Aanvi%20Bindal/.gemini/antigravity/brain/69dda630-15cb-4083-be95-0e1ca87f1aa0/dashboard_overview_1775373581034.png)
 
-## Getting Started
+## ✨ Core Features
 
-### 1. Launch with Docker Compose
-The system is fully containerized. A single command handles Postgres, Redis, and the Backend.
+- **🧠 Expert Intelligence Core**: Uses a 4-tier performance matrix (Excellence, Stable, Probation, Critical) to generate non-repetitive, course-specific advice.
+- **🤖 ISAES Copilot (AI Chatbot)**: A resilient chat assistant with a REST-fallback handshake, ensuring 100% connectivity. Includes pre-fed FAQ buttons for instant answers.
+- **📊 Global Intelligence Overview**: A real-time executive dashboard showing Institutional Risk Index, Average GPA, and Participation Rate across the registry.
+- **📄 Official Academic Reports**: Generate and export detailed PDF/HTML intelligence reports for students.
+- **🔍 Multi-Dimensional Filtering**: Search and filter by Department (CS, EE, ME, BA, DS), CGPA, or Student ID.
+
+## 🛠️ Technology Stack
+
+| Layer | Technology |
+|---|---|
+| **Frontend** | React 18, Vite, TailwindCSS (Premium UI/UX) |
+| **Backend** | FastAPI (Python 3.10+), Pydantic |
+| **Expert System** | Experta (Rule-based Inference Engine) |
+| **Chat Context** | Redis (Optional Memory Storage) |
+| **Reports** | Jinja2, WeasyPrint (PDF Fallback to HTML) |
+
+## 🚀 Quick Setup (Global Roster)
+
+### 1. Requirements
+- Node.js (v18+)
+- Python (v3.10+)
+- Docker (Optional for easy orchestration)
+
+### 2. Local Installation
+
+**Backend Setup:**
 ```bash
-docker-compose up --build
+cd backend
+pip install -r requirements.txt
+uvicorn app.main:app --reload --port 8000
 ```
-> The API will be available at [http://localhost:8000/docs](http://localhost:8000/docs) (Swagger UI).
 
-### 2. Run the React Frontend
-Open a separate terminal and initialize the UI:
+**Frontend Setup:**
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
 
-## System Rules & Management
-Admins can directly edit Inference Rules physically inside the `/backend/rules` directory using YAML format, or overwrite them practically via the newly exposed `PUT /api/v1/admin/rules` backend endpoints.
+### 3. Docker Deployment (Single Command)
+```bash
+docker-compose up --build
+```
 
-### Seed Logic Included
-- `risk_assessment.yaml`: Validates GPA triggers against multiple conditions.
-- `track_eligibility.yaml`: Audits Honour's track capabilities based on strict rule-chains.
+## 📂 Project Structure
+- `backend/`: FastAPI server, Expert rules (`/rules`), and logic.
+- `frontend/`: React components, Dashboard UI (`src/components`), and styling.
+- `rules/`: YAML-based logic files for academic advisory.
+
+## 📜 Deployment Notice
+This project is optimized for ease of demo. If **WeasyPrint** GTK3 binaries are missing on the host, the system automatically falls back to **High-Fidelity HTML Reports** to ensure no data loss.
+
+---
+**Created by Aanvi Bindal**  
+*ISAES: Transforming Academic Records into Success Trajectories.*
