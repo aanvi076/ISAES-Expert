@@ -1,0 +1,208 @@
+# --- COMPUTER SCIENCE (CS) RULES ---
+- rule_id: CS_EXC
+  name: cs_excellence
+  description: Excellence advice for CS
+  conditions:
+    - field: program
+      operator: eq
+      value: "Computer Science"
+    - field: cgpa
+      operator: gte
+      value: 3.7
+  conclusion:
+    category: improvement
+    recommendation: "CS Excellence: Eligible for the AI Lab Research Assistantship and Fast-Track Dual Degree (BS/MS)."
+    action_tags: [ai_lab, research]
+
+- rule_id: CS_STB
+  name: cs_stable
+  description: Stable advice for CS
+  conditions:
+    - field: program
+      operator: eq
+      value: "Computer Science"
+    - field: cgpa
+      operator: gte
+      value: 3.0
+    - field: cgpa
+      operator: lt
+      value: 3.7
+  conclusion:
+    category: improvement
+    recommendation: "CS Growth: Recommended to complete the AWS Cloud Practitioner certification and join the Open Source Club."
+    action_tags: [cloud, oss]
+
+- rule_id: CS_PRB
+  name: cs_probation
+  description: Probation advice for CS
+  conditions:
+    - field: program
+      operator: eq
+      value: "Computer Science"
+    - field: cgpa
+      operator: lt
+      value: 3.0
+    - field: cgpa
+      operator: gte
+      value: 2.0
+  conclusion:
+    category: improvement
+    recommendation: "CS Recovery: Prioritize Data Structures and Algorithms. Attend the weekly 'Code Flow' peer-tutoring sessions."
+    action_tags: [peer_tutoring, dsa]
+
+- rule_id: CS_CRT
+  name: cs_critical
+  description: Critical advice for CS
+  conditions:
+    - field: program
+      operator: eq
+      value: "Computer Science"
+    - field: cgpa
+      operator: lt
+      value: 2.0
+  conclusion:
+    category: risk
+    risk_level: HIGH
+    recommendation: "CS CRITICAL: Mandatory academic counselling. Suggest deferring advanced electives to focus on CORE math/coding."
+    action_tags: [probation, counseling]
+
+# --- ELECTRICAL ENGINEERING (EE) RULES ---
+- rule_id: EE_EXC
+  name: ee_excellence
+  description: Excellence advice for EE
+  conditions:
+    - field: program
+      operator: eq
+      value: "Electrical Engineering"
+    - field: cgpa
+      operator: gte
+      value: 3.7
+  conclusion:
+    category: improvement
+    recommendation: "EE Excellence: Nomination for the IEEE Merit Scholarship and internship priority at National Power Grid."
+    action_tags: [ieee, internship]
+
+- rule_id: EE_CRT
+  name: ee_critical
+  description: Critical advice for EE
+  conditions:
+    - field: program
+      operator: eq
+      value: "Electrical Engineering"
+    - field: cgpa
+      operator: lt
+      value: 2.0
+  conclusion:
+    category: risk
+    risk_level: HIGH
+    recommendation: "EE CRITICAL: Immediate review of Laboratory safety credits and mandatory Circuits fundamentals workshop."
+    action_tags: [lab_safety, remedial]
+
+# --- MECHANICAL ENGINEERING (ME) RULES ---
+- rule_id: ME_EXC
+  name: me_excellence
+  description: Excellence advice for ME
+  conditions:
+    - field: program
+      operator: eq
+      value: "Mechanical Engineering"
+    - field: cgpa
+      operator: gte
+      value: 3.7
+  conclusion:
+    category: improvement
+    recommendation: "ME Excellence: Leadership role in the Formula Student Racing Team and Advanced CAD/FEA certification."
+    action_tags: [formula_student, cad]
+
+- rule_id: ME_CRT
+  name: me_critical
+  description: Critical advice for ME
+  conditions:
+    - field: program
+      operator: eq
+      value: "Mechanical Engineering"
+    - field: cgpa
+      operator: lt
+      value: 2.0
+  conclusion:
+    category: risk
+    risk_level: HIGH
+    recommendation: "ME CRITICAL: Academic alert. Must retake Statics/Dynamics before proceeding to Machine Design."
+    action_tags: [retake, statics]
+
+# --- BUSINESS ADMIN (BA) RULES ---
+- rule_id: BA_EXC
+  name: ba_excellence
+  description: Excellence advice for BA
+  conditions:
+    - field: program
+      operator: eq
+      value: "Business Admin"
+    - field: cgpa
+      operator: gte
+      value: 3.7
+  conclusion:
+    category: improvement
+    recommendation: "BA Excellence: Selection for the International Case Competition Team and fast-track MBA candidacy."
+    action_tags: [case_comp, mba]
+
+- rule_id: BA_CRT
+  name: ba_critical
+  description: Critical advice for BA
+  conditions:
+    - field: program
+      operator: eq
+      value: "Business Admin"
+    - field: cgpa
+      operator: lt
+      value: 2.0
+  conclusion:
+    category: risk
+    risk_level: HIGH
+    recommendation: "BA CRITICAL: Risk of exclusion. Mandatory repeat of Accounting and Microeconomics with focused tutoring."
+    action_tags: [probation, tutoring]
+
+# --- DATA SCIENCE (DS) RULES ---
+- rule_id: DS_EXC
+  name: ds_excellence
+  description: Excellence advice for DS
+  conditions:
+    - field: program
+      operator: eq
+      value: "Data Science"
+    - field: cgpa
+      operator: gte
+      value: 3.7
+  conclusion:
+    category: improvement
+    recommendation: "DS Excellence: Admission to the Kaggle Grandmaster Mentorship program and AI Ethics Fellowship."
+    action_tags: [kaggle, ai_ethics]
+
+- rule_id: DS_CRT
+  name: ds_critical
+  description: Critical advice for DS
+  conditions:
+    - field: program
+      operator: eq
+      value: "Data Science"
+    - field: cgpa
+      operator: lt
+      value: 2.0
+  conclusion:
+    category: risk
+    risk_level: HIGH
+    recommendation: "DS CRITICAL: Mathematical deficiency detected. Mandatory enrollment in Linear Algebra and Probability refresher."
+    action_tags: [math_refresher, probability]
+
+# --- GENERAL IMPROVEMENT RULES (Fallback/Cross-program) ---
+- rule_id: GEN_ATT
+  name: low_attendance_fix
+  description: Catch-all for low attendance
+  conditions:
+    - field: attendance_pct
+      operator: lt
+      value: 75.0
+  conclusion:
+    category: improvement
+    recommendation: "Personal Strategy: Switch to 'Hybrid Attendance' mode and use the Online Lecture Vault for missed content."
+    action_tags: [hybrid, lecture_vault]

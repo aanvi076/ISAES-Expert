@@ -1,0 +1,28 @@
+- rule_id: R001
+  name: high_risk_cgpa
+  description: Flag student as high risk if CGPA is critically low
+  conditions:
+    - field: cgpa
+      operator: lt
+      value: 2.0
+    - field: failed_subjects
+      operator: gte
+      value: 2
+  conclusion:
+    risk_level: HIGH
+    recommendation: "Immediate academic counselling required due to low CGPA and multiple backlogs."
+    action_tags: [counselling, remediation, parent_alert]
+  priority: 1
+
+- rule_id: R002
+  name: medium_risk_attendance
+  description: Flag student as medium risk if attendance is below 75%
+  conditions:
+    - field: attendance_pct
+      operator: lt
+      value: 75.0
+  conclusion:
+    risk_level: MEDIUM
+    recommendation: "Attendance is below the mandatory 75% threshold. Please meet with your advisor."
+    action_tags: [attendance_warning]
+  priority: 2

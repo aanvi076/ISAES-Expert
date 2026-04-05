@@ -1,0 +1,18 @@
+- rule_id: E001
+  name: honours_track_eligible
+  description: Validates if the student is eligible for the Honours / Research track
+  conditions:
+    - field: cgpa
+      operator: gte
+      value: 3.5
+    - field: failed_subjects
+      operator: eq
+      value: 0
+    - field: program
+      operator: eq
+      value: "Undergraduate"
+  conclusion:
+    risk_level: LOW
+    recommendation: "Excellent performance! You are eligible to apply for the Honours/Research track."
+    action_tags: [honours_track, scholarship_opportunity]
+  priority: 1

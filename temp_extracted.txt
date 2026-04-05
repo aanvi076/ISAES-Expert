@@ -1,0 +1,381 @@
+ISAES
+Intelligent Student Academic Advisory Expert System
+Project & Design Specifications  —  v1.0
+Prepared for: 
+Antigravity
+Application Area: 
+Educational Decision Support
+Methodology: 
+Rule-Based Expert System — Forward & Backward Chaining
+1. Project Overview
+ISAES is a full-stack educational advisory platform that combines a rule-based expert system with an AI-powered chatbot and a formal report generation pipeline. The system ingests student academic data and applies a structured knowledge base of inference rules to produce personalised academic recommendations, risk assessments, and printable advisory reports.
+Attribute
+Value
+System Name
+ISAES — Intelligent Student Academic Advisory Expert System
+Application Area
+Educational Decision Support
+Inference Methodology
+Forward Chaining (data-driven) + Backward Chaining (goal-driven)
+Primary Users
+Students, Teachers / Advisors, Administrators
+Report Output
+Structured PDF per student — versioned and archived
+Chatbot Interface
+Natural-language Q&A powered by Claude API
+1.1 Core Capabilities
+Ingest student academic data — grades, attendance, subjects, electives, assessments
+Run inference rules (forward + backward chaining) to derive recommendations
+Provide a conversational AI chatbot for student and advisor Q&A
+Generate formal, printable PDF advisory reports per student
+Admin panel for rule management, student records, and audit logs
+2. Technology Stack
+Layer
+Technology
+Rationale
+Frontend
+React 18 + TypeScript + Vite
+Component reuse, type safety, fast dev builds
+Styling
+Tailwind CSS + shadcn/ui
+Utility-first, consistent component library
+PDF View
+React-PDF + print CSS
+In-browser preview and print
+Backend / API
+FastAPI (Python 3.11+)
+Async, auto Swagger docs, Pydantic validation
+Expert System
+Experta (Python, CLIPS-based)
+Forward + backward chaining, declarative rules
+Chatbot LLM
+Claude API (claude-sonnet)
+Contextual advisory conversations
+Authentication
+JWT (access + refresh tokens)
+Stateless, role-based
+Primary Database
+PostgreSQL 16
+Relational student data, audit trails
+Cache / Sessions
+Redis 7
+Chat sessions, API caching
+Knowledge Base
+YAML rule files loaded at startup
+Human-readable, version-controllable rules
+PDF Generation
+WeasyPrint or ReportLab
+Server-side PDF rendering
+Deployment
+Docker + docker-compose
+Reproducible env, easy handoff
+3. System Modules
+3.1 Frontend — React SPA
+The frontend is a single-page React application with role-aware routing. It serves three classes of user: students, teachers/advisors, and administrators.
+Pages and Routes
+Route
+View
+Description
+/login
+Login
+Role-aware auth (student / teacher / admin)
+/dashboard
+Student Home
+GPA summary, alerts, quick chatbot access
+/profile/:id
+Student Profile
+Full academic record view
+/advise/:id
+Advisory Report
+Generated recommendations, printable
+/chat
+Chatbot
+Conversational advisory assistant
+/admin
+Admin Panel
+Manage students, rules, reports
+/admin/rules
+Rule Editor
+View/edit inference rules (JSON/YAML)
+/reports
+Report List
+All generated reports, filter/search
+Key Frontend Components
+StudentCard — summary widget with GPA, risk flag, and trend arrow
+ReportViewer — structured multi-section report with print button
+ChatWidget — floating or full-page chatbot with typing indicator and message history
+RuleEditor — admin-only YAML/JSON rule editor with syntax highlighting
+GradeTable — subject-by-subject grade breakdown with conditional colour coding
+AlertBanner — risk-level banner (Low / Medium / High / Critical)
+3.2 REST API — FastAPI
+The API is the central communication layer between frontend, expert system, chatbot, and database. All endpoints are versioned under /api/v1/ and documented automatically via Swagger UI.
+Endpoint
+Method
+Description
+/auth/login
+POST
+Returns JWT access + refresh tokens
+/auth/refresh
+POST
+Refresh access token
+/students/
+GET
+List all students (admin/teacher only)
+/students/{id}
+GET
+Get full student profile
+/students/{id}/advise
+POST
+Trigger inference engine, return recommendations
+/students/{id}/report
+GET
+Fetch latest advisory report
+/students/{id}/report/pdf
+GET
+Download PDF report
+/chat/message
+POST
+Send message to chatbot, get response
+/chat/history/{session_id}
+GET
+Fetch chat session history
+/admin/rules
+GET/POST/PUT
+Manage inference rules
+/admin/students
+POST/PUT/DELETE
+CRUD on student records
+WebSocket
+ws://host/ws/chat/{session_id} — Real-time chatbot streaming. The frontend connects on chat open; the backend streams Claude API tokens as they arrive.
+Authentication
+All routes except /auth/login require Authorization: Bearer <token>. Role-based middleware enforces student / teacher / admin access levels. JWT access tokens expire in 15 minutes; refresh tokens expire in 7 days.
+3.3 Expert System — Inference Engine
+The inference engine is the intellectual core of the system. Built using Experta (a Python port of CLIPS), it supports both forward and backward chaining over a YAML-defined knowledge base.
+Inference Modes
+Forward chaining — given a student's data, fire all applicable rules automatically and derive conclusions (e.g., GPA < 2.0 AND attendance < 60% → HIGH RISK flag)
+Used for: risk assessment, scholarship alerts, attendance warnings, progression checks
+Backward chaining — given a goal, work backward through the rule chain to verify conditions (e.g., Is this student eligible for the Honours track?)
+Used for: eligibility verification, track qualification, award criteria
+Rule Categories
+Category
+Example Rule
+Risk Assessment
+If CGPA < 2.5 and failed_subjects >= 2, then Risk = HIGH
+Subject Recommendation
+If interest = 'Data Science' and math_grade >= B, then recommend ML electives
+Remediation Advice
+If subject = 'Statistics' and grade = D, then recommend tutoring + resource links
+Track Eligibility
+If CGPA >= 3.5 and no backlogs, then eligible for Honours / Research track
+Scholarship Alert
+If CGPA >= 3.7 and income_band = LOW, then flag for scholarship application
+Attendance Warning
+If attendance < 75% in any subject, then trigger attendance advisory
+Progression Check
+If year = 2 and credit_completion < 70%, then risk of year drop
+Rule File Format (YAML)
+Sample Rule — R001: high_risk_cgpa
+rule_id: R001
+name: high_risk_cgpa
+description: Flag student as high risk if CGPA is critically low
+conditions:
+  - field: cgpa
+    operator: lt
+    value: 2.0
+  - field: failed_subjects
+    operator: gte
+    value: 2
+conclusion:
+  risk_level: HIGH
+  recommendation: "Immediate academic counselling required."
+  action_tags: [counselling, remediation, parent_alert]
+priority: 1
+3.4 Chatbot — AI Advisory Assistant
+The chatbot provides a natural-language interface over the expert system's structured output. It is powered by the Claude API and grounded in each student's academic context.
+Architecture
+FastAPI WebSocket endpoint receives user message
+System prompt includes: student profile data + current inference recommendations + conversation history
+Claude API (claude-sonnet) generates a contextually grounded response
+Response is streamed back to the frontend token-by-token
+Chatbot Capabilities
+Answer questions about grades, CGPA, and attendance in plain language
+Explain advisory recommendations in student-friendly terms
+Suggest study resources, career paths, and elective choices
+Alert about deadlines, backlogs, and scholarship windows
+Escalate serious concerns (dropout risk, mental health flags) to a human advisor
+Session Management
+Redis stores conversation history keyed by session_id. Each session is scoped to one student and expires after 24 hours of inactivity. Session history is passed to Claude on each turn to maintain context.
+3.5 Report Generator
+Each advisory report is a formal, printable document. Reports are generated server-side as PDFs using WeasyPrint (HTML-to-PDF) and stored linked to the student record. Every run produces a new versioned report; old versions are archived.
+Report Sections
+#
+Section
+Contents
+1
+Header
+Student name, ID, program, semester, date, institution logo
+2
+Academic Summary
+CGPA, credit completion %, rank percentile, year/semester
+3
+Subject Performance Table
+All subjects with grade, marks, attendance %, status
+4
+Risk Assessment
+Overall risk level with traffic-light indicator and explanation
+5
+Expert System Recommendations
+All fired rules with reasoning in plain language
+6
+Action Plan
+Prioritised action items (retake, tutoring, scholarship application)
+7
+Chatbot Summary
+Optional: key Q&A from the session
+8
+Advisor Sign-off
+Signature block for teacher/counsellor
+9
+Footer
+Confidentiality notice, generated timestamp, report version
+4. Database Schema
+The primary datastore is PostgreSQL 16. The schema is managed via Alembic migrations. Key tables are listed below.
+Table
+Key Columns
+students
+id, name, email, program, year, dob, created_at
+academic_records
+id, student_id, subject_id, semester, grade, marks, attendance_pct
+subjects
+id, name, code, credits, department
+inference_results
+id, student_id, run_at, risk_level, recommendations (JSON), rules_fired (JSON)
+reports
+id, student_id, inference_result_id, pdf_url, generated_at, version
+chat_sessions
+id, student_id, started_at, ended_at, session_key
+chat_messages
+id, session_id, role, content, timestamp
+users
+id, student_id (nullable), email, role, password_hash
+rules
+id, rule_id, name, yaml_content, active, created_by, updated_at
+5. Role Access Matrix
+Feature
+Student
+Teacher
+Admin
+View own dashboard
+Yes
+—
+Yes
+View own report
+Yes
+—
+Yes
+Use chatbot
+Yes
+Yes
+Yes
+View all students
+No
+Yes
+Yes
+Trigger inference run
+No
+Yes
+Yes
+Download PDF report
+Own only
+Yes
+Yes
+Edit inference rules
+No
+No
+Yes
+Add / edit students
+No
+No
+Yes
+View audit logs
+No
+No
+Yes
+6. Project Folder Structure
+Backend — /backend/
+app/
+  api/          — FastAPI route handlers
+  core/         — Auth, config, middleware
+  models/       — SQLAlchemy ORM models
+  schemas/      — Pydantic request/response schemas
+  services/
+    expert/     — Inference engine + rule loader
+    chatbot/    — Claude API integration
+    reports/    — PDF generation
+  db/           — DB connection + Alembic migrations
+rules/          — YAML knowledge base files
+main.py
+Frontend — /frontend/
+src/
+  pages/        — Route-level components
+  components/   — Reusable UI components
+  hooks/        — Custom React hooks
+  api/          — Axios API client functions
+  types/        — TypeScript interfaces
+vite.config.ts
+Root
+docker-compose.yml
+README.md
+7. Non-Functional Requirements
+Requirement
+Target
+API response time (advisory run)
+< 3 seconds
+PDF generation time
+< 5 seconds
+Chatbot first-token latency
+< 1.5 seconds
+Concurrent users supported
+Minimum 100 simultaneous
+Report data retention
+5 years, archived
+JWT access token expiry
+15 minutes
+JWT refresh token expiry
+7 days
+Rule file updates
+Hot-reload without server restart
+Accessibility
+WCAG 2.1 AA compliant UI
+8. Development Phases
+Phase
+Deliverables
+Est. Duration
+1 — Foundation
+DB schema, Auth API, basic student CRUD, login UI
+1–2 weeks
+2 — Expert Engine
+Rule loader, inference engine, /advise endpoint, unit tests
+1–2 weeks
+3 — Report System
+Report model, PDF generator, ReportViewer UI
+1 week
+4 — Chatbot
+Claude API integration, WebSocket, ChatWidget UI
+1 week
+5 — Admin Panel
+Rule editor, student management, audit log
+1 week
+6 — Polish & Deploy
+End-to-end testing, Docker, demo data seed, docs
+1 week
+9. Key Design Decisions
+Why Experta for the Expert System?
+Experta is a production-ready Python port of CLIPS with native Rete algorithm-based forward chaining. Rules are human-readable YAML files editable by non-developers, version-controllable in Git, and hot-reloadable without a server restart.
+Why FastAPI over Django?
+FastAPI is async-native and auto-generates OpenAPI/Swagger documentation. Pydantic validation is a natural fit for rule schemas and student data. It is lighter weight than Django for an API-only backend and has excellent performance under concurrent load.
+Why Claude for the Chatbot (not a custom model)?
+The system already has a structured inference engine for rule-based reasoning. Claude's role is purely language — translating structured recommendations into natural conversational guidance. Using the API eliminates fine-tuning cost, model hosting overhead, and brings Anthropic's safety capabilities built in.
+Why Server-side PDF Generation?
+Consistent formatting is guaranteed regardless of the student's browser or OS. The advisory report is an official institutional document and must look identical every time. Server-side generation also allows reports to be stored, versioned, and audited centrally.
+End of Specification Document  —  ISAES v1.0

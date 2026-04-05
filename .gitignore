@@ -1,0 +1,30 @@
+# Node modules
+node_modules/
+dist/
+build/
+.env
+.env.local
+
+# Python caches
+**/__pycache__/
+**/*.pyc
+.venv/
+env/
+venv/
+ENV/
+*.log
+
+# Windows specific
+Thumb.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Agent/Private files
+.gemini/
+.git/
+.vscode/
+.idea/
+
+# PDF/Reports (local temp)
+backend/app/static/reports/
+**/isaes_reports/
