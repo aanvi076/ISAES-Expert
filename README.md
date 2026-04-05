@@ -8,9 +8,9 @@
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/aanvi076/ISAES-Expert&root-directory=frontend)
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/aanvi076/ISAES-Expert)
 
-- **Frontend (UI)**: [Connect to Vercel](https://vercel.com/new/import?s=https://github.com/aanvi076/ISAES-Expert)
-- **Backend (API)**: [Connect to Render](https://render.com/new/web-service?repo=https://github.com/aanvi076/ISAES-Expert)
-- **Source Code**: [github.com/aanvi076/ISAES-Expert](https://github.com/aanvi076/ISAES-Expert)
+- **🚀 Live Dashboard**: [https://isaes-expert.vercel.app](https://isaes-expert.vercel.app)
+- **🧠 Intelligence Hub (API)**: [https://isaes-backend.onrender.com](https://isaes-backend.onrender.com)
+- **📦 Source Code**: [github.com/aanvi076/ISAES-Expert](https://github.com/aanvi076/ISAES-Expert)
 
 ## 📥 Clone & Show (Immediate Access)
 To show this on a different laptop, just run:
